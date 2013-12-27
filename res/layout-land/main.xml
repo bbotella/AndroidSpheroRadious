@@ -7,7 +7,7 @@
     This creates a new namespace, "app", which allows the use of the JoystickView's "puck_radius" attribute.
 -->
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-                xmlns:app="http://schemas.android.com/apk/lib/es.ereadme.androidsperoradious"
+                xmlns:app="http://schemas.android.com/apk/lib/orbotix.robot"
                 android:layout_width="fill_parent"
                 android:layout_height="fill_parent"
                 android:background="#FFF">
@@ -50,7 +50,7 @@
             android:layout_alignParentTop="true"
             android:layout_centerHorizontal="true"/>
 
-    <orbotix.robot.widgets.joystick.JoystickView
+    <es.ereadme.androidsperoradious.orbotix.robot.widgets.JoystickView
             android:id="@+id/joystick"
             android:layout_width="250dp"
             android:layout_height="250dp"
