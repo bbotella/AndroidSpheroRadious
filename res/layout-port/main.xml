@@ -7,7 +7,7 @@
     This creates a new namespace, "app", which allows the use of the JoystickView's "puck_radius" attribute.
 -->
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-                xmlns:app="http://schemas.android.com/apk/lib/es.ereadme.androidsperoradious"
+                xmlns:app="http://schemas.android.com/apk/lib/es.ereadme.androidspheroradious"
                 android:layout_width="fill_parent"
                 android:layout_height="fill_parent"
                 android:background="#fff">
@@ -28,7 +28,7 @@
             android:onClick="onSleepClick"
             android:text="Sleep"/>
 
-    <es.ereadme.androidsperoradious.orbotix.robot.widgets.CalibrationImageButtonView
+    <es.ereadme.androidspheroradious.orbotix.robot.widgets.CalibrationImageButtonView
             android:id="@+id/calibration_image_button"
             android:layout_width="50dp"
             android:layout_height="50dp"
@@ -43,15 +43,14 @@
             app:calibration_circle_radius="100dp"
             />
 
-    <es.ereadme.androidsperoradious.orbotix.robot.widgets.SlideToSleepView
+    <es.ereadme.androidspheroradious.orbotix.robot.widgets.SlideToSleepView
             android:id="@+id/slide_to_sleep_view"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentTop="true"
             android:layout_centerHorizontal="true"/>
 
-    
-    <es.ereadme.androidsperoradious.orbotix.robot.widgets.JoystickView
+    <es.ereadme.androidspheroradious.orbotix.robot.widgets.JoystickView
             android:id="@+id/joystick"
             android:layout_width="250dp"
             android:layout_height="250dp"
@@ -65,7 +64,7 @@
             android:layout_width="fill_parent"
             android:layout_height="fill_parent"/>
 
-    <es.ereadme.androidsperoradious.orbotix.robot.widgets.NoSpheroConnectedView
+    <es.ereadme.androidspheroradious.orbotix.robot.widgets.NoSpheroConnectedView
             android:id="@+id/no_sphero_connected_view"
             android:layout_width="fill_parent"
             android:layout_height="fill_parent"

@@ -12,14 +12,16 @@ import android.os.Bundle;
 import android.provider.Settings;
 import android.util.Log;
 import android.view.Menu;
+import android.view.MotionEvent;
 import android.view.View;
-import es.ereadme.androidsperoradious.orbotix.robot.app.ColorPickerActivity;
-import es.ereadme.androidsperoradious.orbotix.robot.widgets.CalibrationImageButtonView;
-import es.ereadme.androidsperoradious.orbotix.robot.widgets.JoystickView;
-import es.ereadme.androidsperoradious.orbotix.robot.widgets.NoSpheroConnectedView;
-import es.ereadme.androidsperoradious.orbotix.robot.widgets.SlideToSleepView;
-import es.ereadme.androidsperoradious.orbotix.robot.widgets.NoSpheroConnectedView.OnConnectButtonClickListener;
+import android.widget.Toast;
 import es.ereadme.androidspheroradious.BroadcastReceivers.ColorChangeBroadcastReceiver;
+import es.ereadme.androidspheroradious.orbotix.robot.app.ColorPickerActivity;
+import es.ereadme.androidspheroradious.orbotix.robot.widgets.CalibrationImageButtonView;
+import es.ereadme.androidspheroradious.orbotix.robot.widgets.JoystickView;
+import es.ereadme.androidspheroradious.orbotix.robot.widgets.NoSpheroConnectedView;
+import es.ereadme.androidspheroradious.orbotix.robot.widgets.NoSpheroConnectedView.OnConnectButtonClickListener;
+import es.ereadme.androidspheroradious.orbotix.robot.widgets.SlideToSleepView;
 
 
 public class MainActivity extends ControllerActivity {
@@ -167,6 +169,77 @@ public class MainActivity extends ControllerActivity {
             unregisterReceiver(mColorChangeReceiver); // many times throws exception on leak
         } catch (Exception e) {
         }
+    }
+    
+    
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+
+        if (resultCode == RESULT_OK) {
+            if (requestCode == COLOR_PICKER_ACTIVITY) {
+                //Get the colors
+                mRed = data.getIntExtra(ColorPickerActivity.EXTRA_COLOR_RED, 0xff);
+                mGreen = data.getIntExtra(ColorPickerActivity.EXTRA_COLOR_GREEN, 0xff);
+                mBlue = data.getIntExtra(ColorPickerActivity.EXTRA_COLOR_BLUE, 0xff);
+
+                //Set the color
+                mRobot.setColor(mRed, mGreen, mBlue);
+            } else if (requestCode == BLUETOOTH_ENABLE_REQUEST) {
+                // User enabled bluetooth, so refresh Sphero list
+                mSpheroConnectionView.setVisibility(View.VISIBLE);
+                mSpheroConnectionView.startDiscovery();
+            }
+        } else {
+            if (requestCode == STARTUP_ACTIVITY) {
+                // Failed to return any robot, so we bring up the no robot connected view
+                mNoSpheroConnectedView.setVisibility(View.VISIBLE);
+            } else if (requestCode == BLUETOOTH_ENABLE_REQUEST) {
+
+                // User clicked "NO" on bluetooth enable settings screen
+                Toast.makeText(MainActivity.this,
+                        "Enable Bluetooth to Connect to Sphero", Toast.LENGTH_LONG).show();
+            } else if (requestCode == BLUETOOTH_SETTINGS_REQUEST) {
+                // User enabled bluetooth, so refresh Sphero list
+                mSpheroConnectionView.setVisibility(View.VISIBLE);
+                mSpheroConnectionView.startDiscovery();
+            }
+        }
+    }
+
+    /**
+     * When the user clicks the "Color" button, show the ColorPickerActivity
+     *
+     * @param v The Button clicked
+     */
+    public void onColorClick(View v) {
+
+        mColorPickerShowing = true;
+        Intent i = new Intent(this, ColorPickerActivity.class);
+
+        //Tell the ColorPickerActivity which color to have the cursor on.
+        i.putExtra(ColorPickerActivity.EXTRA_COLOR_RED, mRed);
+        i.putExtra(ColorPickerActivity.EXTRA_COLOR_GREEN, mGreen);
+        i.putExtra(ColorPickerActivity.EXTRA_COLOR_BLUE, mBlue);
+
+        startActivityForResult(i, COLOR_PICKER_ACTIVITY);
+    }
+
+    /**
+     * When the user clicks the "Sleep" button, show the SlideToSleepView shows
+     *
+     * @param v The Button clicked
+     */
+    public void onSleepClick(View v) {
+        mSlideToSleepView.show();
+    }
+
+
+    @Override
+    public boolean dispatchTouchEvent(MotionEvent event) {
+        mCalibrationView.interpretMotionEvent(event);
+        mSlideToSleepView.interpretMotionEvent(event);
+        return super.dispatchTouchEvent(event);
     }
     
     

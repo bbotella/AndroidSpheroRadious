@@ -1,6 +1,6 @@
 package es.ereadme.androidspheroradious.BroadcastReceivers;
 
-import es.ereadme.androidsperoradious.orbotix.robot.app.ColorPickerActivity;
+import es.ereadme.androidspheroradious.orbotix.robot.app.ColorPickerActivity;
 import orbotix.sphero.Sphero;
 import android.content.BroadcastReceiver;
 import android.content.Context;

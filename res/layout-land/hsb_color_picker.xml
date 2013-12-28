@@ -91,7 +91,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
                 android:layout_marginRight="20dip">
-                <es.ereadme.androidsperoradious.orbotix.robot.widgets.HSBColorPickerView
+                <es.ereadme.androidspheroradious.orbotix.robot.widgets.HSBColorPickerView
                     android:id="@+id/ColorPickerBase"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
