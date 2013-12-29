@@ -7,10 +7,10 @@
     This creates a new namespace, "app", which allows the use of the JoystickView's "puck_radius" attribute.
 -->
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-                xmlns:app="http://schemas.android.com/apk/lib/orbotix.robot"
+                xmlns:app="http://schemas.android.com/apk/lib/es.ereadme.androidspheroradious"
                 android:layout_width="fill_parent"
                 android:layout_height="fill_parent"
-                android:background="#FFF">
+                android:background="#fff">
 
     <Button
             android:id="@+id/color_button"
@@ -50,6 +50,21 @@
             android:layout_alignParentTop="true"
             android:layout_centerHorizontal="true"/>
 
+    <TextView 
+        android:id="@+id/xDistance"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
+        />
+    <TextView 
+        android:id="@+id/yDistance"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
+        />
+    
     <es.ereadme.androidspheroradious.orbotix.robot.widgets.JoystickView
             android:id="@+id/joystick"
             android:layout_width="250dp"
@@ -70,11 +85,13 @@
             android:layout_height="fill_parent"
             android:visibility="gone"/>
 
+
+
     <orbotix.view.connection.SpheroConnectionView
             android:id="@+id/sphero_connection_view"
             android:layout_width="fill_parent"
             android:layout_height="fill_parent"
-            android:background="#A0000000"/>
+            android:background="#D0000000"/>
 
 
 </RelativeLayout>

@@ -50,6 +50,14 @@
             android:layout_alignParentTop="true"
             android:layout_centerHorizontal="true"/>
 
+    <TextView
+        android:id="@+id/distanceTextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="false"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true" />
+
     <es.ereadme.androidspheroradious.orbotix.robot.widgets.JoystickView
             android:id="@+id/joystick"
             android:layout_width="250dp"

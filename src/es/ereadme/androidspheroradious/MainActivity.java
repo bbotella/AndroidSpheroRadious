@@ -1,7 +1,10 @@
 package es.ereadme.androidspheroradious;
 
+import orbotix.robot.base.ConfigureLocatorCommand;
 import orbotix.robot.base.Robot;
+import orbotix.robot.sensor.LocatorData;
 import orbotix.sphero.ConnectionListener;
+import orbotix.sphero.LocatorListener;
 import orbotix.sphero.Sphero;
 import orbotix.view.calibration.CalibrationView;
 import orbotix.view.calibration.ControllerActivity;
@@ -14,6 +17,7 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MotionEvent;
 import android.view.View;
+import android.widget.TextView;
 import android.widget.Toast;
 import es.ereadme.androidspheroradious.BroadcastReceivers.ColorChangeBroadcastReceiver;
 import es.ereadme.androidspheroradious.orbotix.robot.app.ColorPickerActivity;
@@ -29,6 +33,8 @@ public class MainActivity extends ControllerActivity {
     private final static int STARTUP_ACTIVITY = 0;
     private static final int BLUETOOTH_ENABLE_REQUEST = 11;
     private static final int BLUETOOTH_SETTINGS_REQUEST = 12;
+    
+    private static final String TAG = "aSpheroRadious";
 
     /** ID to start the ColorPickerActivity for result to select a color */
     private final static int COLOR_PICKER_ACTIVITY = 1;
@@ -58,7 +64,35 @@ public class MainActivity extends ControllerActivity {
     private int mRed = 0xff;
     private int mGreen = 0xff;
     private int mBlue = 0xff;
-
+    
+    private float mDistance = 0;
+    private float MAX_DISTANCE = 2500;
+    
+    private float calculateDistanceFromZero(float posX, float posY){
+    	float distance = 0;
+    	distance = (float)Math.sqrt(Math.pow(posX, 2) + Math.pow(posY, 2));
+    	return distance;
+    }
+    
+    private void updateDistance(){
+    	((TextView) findViewById(R.id.distanceTextView)).setText(mDistance + " cm");
+    	float dRed = (mDistance*255) / MAX_DISTANCE;
+    	float dGreen = 255 - ((mDistance*255) / MAX_DISTANCE);
+    	mRobot.setColor((int)dRed, (int)dGreen, 0);
+    }
+    
+    
+    private LocatorListener mLocatorListener = new LocatorListener() {
+        @Override
+        public void onLocatorChanged(LocatorData locatorData) {
+            Log.d(TAG, locatorData.toString());
+            if (locatorData != null) {
+            	mDistance = calculateDistanceFromZero(locatorData.getPositionX(), locatorData.getPositionY());
+            	updateDistance();
+            }
+        }
+    };
+    
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -70,6 +104,8 @@ public class MainActivity extends ControllerActivity {
             public void onConnected(Robot robot) {
                 // Set Robot
                 mRobot = (Sphero) robot; // safe to cast for now
+                mRobot.getSensorControl().addLocatorListener(mLocatorListener);
+                mRobot.getSensorControl().setRate(5);
                 mColorChangeReceiver = new ColorChangeBroadcastReceiver(mRobot);
                 //Set connected Robot to the Controllers
                 setRobot(mRobot);
@@ -80,6 +116,9 @@ public class MainActivity extends ControllerActivity {
                 // Make connect sphero pop-up invisible if it was previously up
                 mNoSpheroConnectedView.setVisibility(View.GONE);
                 mNoSpheroConnectedView.switchToConnectButton();
+                mDistance = 0;
+            	updateDistance();
+            	ConfigureLocatorCommand.sendCommand(mRobot, 1, 0, 0, 0);
             }
 
             @Override
